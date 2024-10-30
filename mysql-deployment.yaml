@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: my-db
+  name: my-db 
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: my-db
+  template:
+    metadata:
+      labels:
+        app: my-db
+    spec:
+#      initContainers:
+#      - name: init-container
+#        image: busybox
+#        command: ['sh', '-c', 'echo "Initialization completed."']
+      containers:
+      - image: mysql:8.0
+        name: mysql
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: mypwd
+        ports:
+        - containerPort: 3306
+          name: mysql
+        volumeMounts:
+        - name: mysql-persistent-storage
+          mountPath: "/var/lib/mysql"
+#      volumes:
+#      - name: db-data
+#        persistentVolumeClaim:
+#          claimName: mysql-data-pvc

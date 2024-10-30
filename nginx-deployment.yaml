@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: nginx
+#    app: my-db
+  name: nginx-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx
+#      app: my-db
+  template:
+    metadata:
+      labels:
+        app: nginx
+#        app: my-db
+    spec:
+#      initContainers:
+#      - name: mydb-available
+#        image: busybox:1.28
+#        command: ['sh', '-c', "until nslookup mydb-service; do echo waiting for database; sleep 4; done"]
+      containers:
+      - name: nginx
+        image: nginx:1.20
+        ports:
+        - containerPort: 8080
+#      - name: log-sidecar
+#        image: busybox:1.28
+#        command: ['sh', '-c']
+#        args:
+#        - while true; do
+#          echo sync app logs;
+#          printenv POD_NAME POD_SERVICE_ACCOUNTPOD_IP;
+#          sleep 20;
+#          done;
+#        env:
+#        - name: POD_NAME
+#          valueFrom:
+#            fieldRef:
+#              fieldPath: metadata.name
+#        - name: POD_SERVICE_ACCOUNT
+#          valueFrom:
+#            fieldRef:
+#              fieldPath: spec.serviceAccountName
+#        - name: POD_IP
+#          valueFrom:
+#            fieldRef:
+#              fieldPath: status.podIP
